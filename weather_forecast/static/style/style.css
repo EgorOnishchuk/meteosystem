@@ -1,0 +1,14 @@
+.navbar-brand i,
+.navbar-brand span {
+    transition: 0.15s;
+}
+
+.navbar-brand:hover i,
+.navbar-brand:hover span {
+    color: #0a58ca;
+}
+
+.banner {
+    background-image: url(../images/nature.jpg);
+    background-size: cover;
+}

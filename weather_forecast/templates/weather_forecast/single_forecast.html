@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Прогноз погоды — Метеосистема{% endblock title %}
+{% block content %}
+<main class="min-vh-100">
+<h1 class="text-center mb-3">Прогноз погоды&nbsp;от {{ meteorological_service }}</h1>
+<div class="py-2 bg-body-secondary">
+    <h2 class="text-center mb-3">{{ locality }}</h2>
+    {% if forecast %}
+    <table class="table table-hover">
+        <tbody>
+            {% for parameter, value in forecast.items %}
+            <tr>
+                <th scope="row" class="text-start">{{ parameter }}</th>
+                <td class="text-center">{{ value|capfirst }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h2 class="text-center">Не&nbsp;удалось получить данные от метеорологической службы.</h2>
+    {% endif %}
+</div>
+{% endblock content %}
+</main>

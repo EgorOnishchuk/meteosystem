@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block links %}<script defer src="{% static 'scripts/validation.js' %}"></script>{% endblock links %}
+{% block title %}Службы — Метеосистема{% endblock title %}
+{% block content %}
+<main class="min-vh-100">
+<h1 class="text-center mb-3">Выбор метеорологической службы</h1>
+<div class="py-5 bg-body-secondary">
+    {% if meteorological_services %}
+	<div class="row row-cols-sm-2 g-4 px-2">
+		{% for service, form in meteorological_services %}
+		<div class="col">
+			<div class="card text-center">
+				<div class="card h-100">
+					<div class="card-body">
+						<h4 class=card-title">{{ service.name }}</h4>
+						<p class="card-text">{{ service.description }}</p>
+						{% csrf_token %}
+						{% crispy form %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+    {% else %}
+	<h2 class="text-center mb-3">Невозможно посмотреть прогноз погоды</h2>
+	<p class="text-center fs-5">Это может быть связано с&nbsp;техническими работами или ошибками как на&nbsp;стороне пользователя, так и&nbsp;на&nbsp;стороне Метеосистемы. Пожалуйста, попробуйте перезайти позже.</p>
+    {% endif %}
+</div>
+{% endblock content %}
+</main>

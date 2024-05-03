@@ -1,0 +1,1 @@
+document.querySelector('.footer__copyright').innerText += `, ${new Date().getFullYear()}`
