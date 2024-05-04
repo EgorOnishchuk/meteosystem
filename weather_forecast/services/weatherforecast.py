@@ -6,7 +6,6 @@ class WeatherForecast(ABC):
     """
     Прогноз погоды по стороннему интерфейсу программирования приложения.
     """
-    Forecast = dict[str: str, str: str, dict[str: str]] | dict[str: str, str: str, dict: None]
 
     def __init__(self, meteorological_service: str, forecast_api: str, current_api: str) -> None:
         """
@@ -42,7 +41,8 @@ class WeatherForecast(ABC):
         return self._get_meteorological_service().meteorologicalapi_set.get(name=self.current_api)
 
     @abstractmethod
-    def get_forecast(self, locality: str, day: int) -> Forecast:
+    def get_forecast(self, locality: str, day: int) -> (dict[str: str, str: str, dict[str: str]] |
+                                                        dict[str: str, str: str, dict: None]):
         """
         Запрашивает прогноз погоды по API.
         :param locality: Населённый пункт, для которого определяется прогноз погоды.
@@ -54,7 +54,8 @@ class WeatherForecast(ABC):
         pass
 
     @abstractmethod
-    def get_current_weather(self, locality: str) -> Forecast:
+    def get_current_weather(self, locality: str) -> (dict[str: str, str: str, dict[str: str]] |
+                                                     dict[str: str, str: str, dict: None]):
         """
         Запрашивает текущую погоду по API.
         :param locality: Населённый пункт, для которого определяется погода.

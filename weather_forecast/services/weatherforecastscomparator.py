@@ -5,7 +5,6 @@ class WeatherForecastsComparator:
     """
     Сопоставление метеоданных от нескольких метеорологических служб.
     """
-    Comparison = dict[str: list[str], str: str, str: dict[str: list[str]]] | dict[str: str]
     order = (
         'Погода',
         'Погода по ощущениям',
@@ -27,7 +26,8 @@ class WeatherForecastsComparator:
         """
         self.args = args
 
-    def get_comparison(self, locality: str) -> Comparison:
+    def get_comparison(self, locality: str) -> (dict[str: list[str], str: str, str: dict[str: list[str]]] |
+                                                dict[str: str]):
         """
         Сравнивает текущую погоду.
         :param locality: Населённый пункт, для которого определяется погода.
