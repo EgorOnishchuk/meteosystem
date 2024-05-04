@@ -41,8 +41,7 @@ class WeatherForecast(ABC):
         return self._get_meteorological_service().meteorologicalapi_set.get(name=self.current_api)
 
     @abstractmethod
-    def get_forecast(self, locality: str, day: int) -> (dict[str: str, str: str, dict[str: str]] |
-                                                        dict[str: str, str: str, dict: None]):
+    def get_forecast(self, locality: str, day: int):
         """
         Запрашивает прогноз погоды по API.
         :param locality: Населённый пункт, для которого определяется прогноз погоды.
@@ -54,8 +53,7 @@ class WeatherForecast(ABC):
         pass
 
     @abstractmethod
-    def get_current_weather(self, locality: str) -> (dict[str: str, str: str, dict[str: str]] |
-                                                     dict[str: str, str: str, dict: None]):
+    def get_current_weather(self, locality: str):
         """
         Запрашивает текущую погоду по API.
         :param locality: Населённый пункт, для которого определяется погода.

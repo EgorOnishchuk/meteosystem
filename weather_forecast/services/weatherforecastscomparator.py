@@ -26,8 +26,7 @@ class WeatherForecastsComparator:
         """
         self.args = args
 
-    def get_comparison(self, locality: str) -> (dict[str: list[str], str: str, str: dict[str: list[str]]] |
-                                                dict[str: str]):
+    def get_comparison(self, locality: str):
         """
         Сравнивает текущую погоду.
         :param locality: Населённый пункт, для которого определяется погода.
