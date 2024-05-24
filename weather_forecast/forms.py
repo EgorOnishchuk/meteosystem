@@ -1,12 +1,26 @@
 from django.forms import Form, RegexField, ChoiceField
-from django.urls import reverse
+from django.utils.safestring import mark_safe
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field
-from crispy_forms.bootstrap import TabHolder, Tab, StrictButton
+from crispy_forms.layout import Layout
+from crispy_forms.bootstrap import PrependedText, StrictButton
+from .models import MeteorologicalService, WeatherTime
 from faker import Faker
 
 
 class WeatherForecastForm(Form):
+    meteorological_service = ChoiceField(
+        choices=((meteorological_service, meteorological_service) for meteorological_service in
+                 MeteorologicalService.objects.all()),
+        label='',
+        help_text='Выберите поставщика метеоданных.',
+    )
+
+    forecast_time = ChoiceField(
+        choices=((weather_time, weather_time) for weather_time in WeatherTime.objects.all()),
+        label='',
+        help_text='Выберите время погоды.',
+    )
+
     locality = RegexField(
         r'^[А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*(?: [А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*)*$',
         max_length=168,
@@ -18,110 +32,26 @@ class WeatherForecastForm(Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+        self.helper.form_action = 'forecast/'
         self.helper.attrs = {
             'novalidate': '',
         }
         self.helper.form_class = 'needs-validation'
-
-
-class AccuWeatherForm(WeatherForecastForm):
-    CHOICES = (
-        (0, 'Не указана'),
-        (1, 'Завтра'),
-        (2, 'Послезавтра'),
-    )
-    day = ChoiceField(choices=CHOICES,
-                      label='',
-                      help_text='Укажите дату прогноза или будет получена погода сейчас.')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse('AccuWeather')
         self.helper.layout = Layout(
-            TabHolder(
-                Tab(
-                    'Сейчас',
-                    css_id='now-accuweather',
-                ),
-                Tab(
-                    'Прогноз',
-                    Field(
-                        'day',
-                    ),
-                    css_id='forecast-accuweather',
-                ),
+            PrependedText(
+                'meteorological_service',
+                mark_safe('<i class="bi bi-building"></i>'),
             ),
-            Field(
+            PrependedText(
+                'forecast_time',
+                mark_safe('<i class="bi bi-calendar3"></i>'),
+            ),
+            PrependedText(
                 'locality',
+                mark_safe('<i class="bi bi-geo-alt"></i>'),
                 pattern='^[А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*(?: [А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*)*$',
                 autocomplete='on',
                 placeholder=Faker('ru_RU').city_name(),
-            ),
-            StrictButton(
-                'Посмотреть прогноз погоды',
-                css_class='btn-primary',
-                type='submit',
-            ),
-        )
-
-
-class OpenWeatherMapForm(WeatherForecastForm):
-    CHOICES = (
-        (0, 'Не указана'),
-        (9, 'Завтра'),
-        (17, 'Послезавтра'),
-    )
-    day = ChoiceField(choices=CHOICES,
-                      label='',
-                      help_text='Укажите дату прогноза или будет получена погода сейчас.'
-                      )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse('OpenWeatherMap')
-        self.helper.layout = Layout(
-            TabHolder(
-                Tab(
-                    'Сейчас',
-                    css_id='now-openweathermap'
-                ),
-                Tab(
-                    'Прогноз',
-                    Field(
-                        'day',
-                    ),
-                    css_id='forecast-openweathermap',
-                ),
-            ),
-            Field(
-                'locality',
-                pattern='^[А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*(?: [А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*)*$',
-                autocomplete='on',
-                placeholder=Faker('ru_RU').city_name(),
-            ),
-            StrictButton(
-                'Посмотреть прогноз погоды',
-                css_class='btn-primary',
-                type='submit',
-            ),
-        )
-
-
-class ComparisonForm(WeatherForecastForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse('Сравнение')
-        self.helper.layout = Layout(
-            TabHolder(
-                Tab(
-                    'Сейчас',
-                    Field(
-                        'locality',
-                        pattern='^[А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*(?: [А-Яа-я0-9]+(?:-[А-Яа-я0-9]+)*)*$',
-                        autocomplete='on',
-                        placeholder=Faker('ru_RU').city_name(),
-                    ),
-                ),
             ),
             StrictButton(
                 'Посмотреть прогноз погоды',

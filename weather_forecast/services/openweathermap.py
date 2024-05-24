@@ -75,7 +75,8 @@ class OpenWeatherMap(WeatherForecast):
 
         return {
             'meteorological_service': self.meteorological_service,
-            'locality': f'{locality}, на {time}',
+            'locality': locality,
+            'time': time,
             'forecast': {
                 'Погода': f'{response["weather"][0]["description"]}, {round(main["temp"])} ℃',
                 'Погода по ощущениям': f'{round(main["temp"])} ℃',

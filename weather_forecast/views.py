@@ -1,99 +1,66 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
-from .models import MeteorologicalService
-from .forms import OpenWeatherMapForm, AccuWeatherForm, ComparisonForm
-from .services.openweathermap import OpenWeatherMap
-from .services.accuweather import AccuWeather
-from .services.weatherforecastscomparator import WeatherForecastsComparator
+from django.db.models import Count
+from json import loads
+from .forms import WeatherForecastForm
+from .models import MeteorologicalService, MeteorologicalParameter
+from .services.weatherforecastmanager import WeatherForecastManager
 
 
 @require_GET
-def services(request):
+def meteorological_services(request):
     return render(
         request,
         'weather_forecast/services.html',
         {
+            'form': WeatherForecastForm(),
             'meteorological_services': [
-                (MeteorologicalService.objects.get(name='AccuWeather'), AccuWeatherForm()),
-                (MeteorologicalService.objects.get(name='OpenWeatherMap'), OpenWeatherMapForm()),
-                (MeteorologicalService.objects.get(name='Сравнение'), ComparisonForm()),
-            ]
-        }
+                (
+                    service,
+                    [service.parameters.filter(weather_time=choice[0]).order_by('importance') for choice in
+                     MeteorologicalParameter.WEATHER_TIME_CHOICES]
+                )
+                for service in MeteorologicalService.objects.all().annotate(cnt=Count('parameters')).order_by('-cnt')
+            ],
+        },
     )
 
 
 @require_POST
-def accuweather_forecast(request):
-    form = AccuWeatherForm(request.POST)
-
+def weather_forecast(request):
+    form = WeatherForecastForm(request.POST)
     if form.is_valid():
-        locality = form.cleaned_data['locality']
-        day = int(form.cleaned_data['day'])
-        accuweather = AccuWeather('AccuWeather',
-                                  'City Search',
-                                  '5 Days of Daily Forecasts',
-                                  'Current Conditions')
-
-        if day == 0:
+        meteorological_service = form.cleaned_data['meteorological_service']
+        forecast = WeatherForecastManager(
+            meteorological_service,
+            form.cleaned_data['forecast_time'],
+            form.cleaned_data['locality'],
+        ).get_weather()
+        if forecast is None:
+            return render(request, '400.html', status=400)
+        elif meteorological_service != 'Сравнение':
             return render(
                 request,
                 'weather_forecast/single_forecast.html',
-                accuweather.get_current_weather(locality)
+                {
+                    'forecast': forecast,
+                    'coverage': MeteorologicalService.objects.get(name=meteorological_service).geographical_coverage,
+                },
             )
-        return render(
-            request,
-            'weather_forecast/single_forecast.html',
-            accuweather.get_forecast(locality, day),
-        )
-
+        else:
+            return render(
+                request,
+                'weather_forecast/multiple_forecast.html',
+                {
+                    'forecast': forecast,
+                    'coverage': MeteorologicalService.objects.get(name=meteorological_service).geographical_coverage,
+                },
+            )
     return render(request, '400.html', status=400)
 
 
 @require_POST
-def openweathermap_forecast(request):
-    form = OpenWeatherMapForm(request.POST)
-
-    if form.is_valid():
-        locality = form.cleaned_data['locality']
-        day = int(form.cleaned_data['day'])
-        openweathermap = OpenWeatherMap('OpenWeatherMap',
-                                        'Geocoding',
-                                        '5 Day / 3 Hour Forecast',
-                                        'Current Weather Data',
-                                        )
-
-        if day == 0:
-            return render(
-                request,
-                'weather_forecast/single_forecast.html',
-                openweathermap.get_current_weather(locality),
-            )
-        return render(
-            request,
-            'weather_forecast/single_forecast.html',
-            openweathermap.get_forecast(locality, day),
-        )
-
-    return render(request, '400.html', status=400)
-
-
-@require_POST
-def comparison(request):
-    form = ComparisonForm(request.POST)
-
-    if form.is_valid():
-        return render(
-            request,
-            'weather_forecast/multiple_forecast.html',
-            WeatherForecastsComparator(AccuWeather('AccuWeather',
-                                                   'City Search',
-                                                   '5 Days of Daily Forecasts',
-                                                   'Current Conditions'),
-                                       OpenWeatherMap('OpenWeatherMap',
-                                                      'Geocoding',
-                                                      '5 Day / 3 Hour Forecast',
-                                                      'Current Weather Data'),
-                                       ).get_comparison(form.cleaned_data['locality'])
-        )
-
-    return render(request, '400.html', status=400)
+def weather_time(request):
+    return JsonResponse({'weather_time': [time.name for time in MeteorologicalService.objects.get(
+        name=loads(request.body).get('meteorological_service')).weather_time.all()]})

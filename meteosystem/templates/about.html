@@ -1,7 +1,69 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}О проекте{% endblock title %}
 {% block content %}
-<main class="min-vh-100">
-	<h1 class="text-center mb-3">О Метеосистеме</h1>
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h2 mt-3 mb-3">О&nbsp;Метеосистеме</h1>
+			<h2 class="h3">Наш стек</h2>
+			<p class="text-center fs-5">
+				Серверная часть погодного агрегатора написана на&nbsp;языке
+				программирования
+				<strong>Python</strong>
+				(версия&nbsp;3) и&nbsp;его высокоуровневом фреймворке
+				<strong>Django</strong> (версия&nbsp;5) с&nbsp;использованием системы
+				управления базами данных <strong>MySQL</strong>. Для программной
+				генерации форм применяется библиотека
+				<i>django-crispy-forms</i>, а&nbsp;для поддержки междоменных запросов
+				&mdash;&nbsp;<i>django-cors-headers</i>.
+			</p>
+			<p class="text-center fs-5">
+				На&nbsp;клиенте работает &laquo;чистый&raquo;
+				<strong>JavaScript</strong> (стандарт ES14), вся вёрстка
+				построена на&nbsp;<strong>Bootstrap</strong> (версия 5).
+			</p>
+			<h2 class="h3">Наша архитектура</h2>
+			<p class="text-center fs-5">
+				Основой устройства приложения является вышеупомянутый Django,
+				чей <strong>Model-View-Template</strong> шаблон проектирования
+				был доработан добавлением служебного слоя <i>&laquo;Services&raquo;</i>,
+				поскольку целесообразно обособить объёмную логику отправки
+				запроса и&nbsp;разбора полученного ответа метеорологической службы.
+				Таким образом, была сформирована
+				<a
+					href="https://martinfowler.com/eaaCatalog/domainModel.html"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+				>
+					объектная модель домена</a
+				>. Это делает веб-приложение полностью соответствующим принципам
+				<strong>Model-Controller-View</strong>, чего нельзя сказать о
+				Django &laquo;из&nbsp;коробки&raquo;.
+			</p>
+			<figure class="figure">
+				<img
+					class="img-fluid my-2"
+					src="{% static 'images/architecture.jpg' %}"
+					alt="Схема архитектуры веб-приложения"
+				/>
+				<figcaption class="figure-caption fs-5">
+					Так выглядит путь страницы изнутри
+				</figcaption>
+			</figure>
+			<h2 class="h3">Сделать свой вклад</h2>
+			<p class="text-center fs-5">
+				Весь программный код доступен на&nbsp;
+				<a
+					href="https://github.com/EgorOnishchuk/meteosystem"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+					>GitHub</a
+				>. Возможны как pull requests, так и&nbsp;письменные пожелания.
+			</p>
+		</div>
+	</div>
 </main>
 {% endblock content %}

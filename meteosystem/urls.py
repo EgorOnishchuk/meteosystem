@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='Главная страница'),
     path('about/', TemplateView.as_view(template_name='about.html'), name='О проекте'),
-    path('forecast/', include('weather_forecast.urls')),
+    path('services/', include('weather_forecast.urls')),
 ]

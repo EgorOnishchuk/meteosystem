@@ -1,24 +1,60 @@
 {% extends 'base.html' %}
-{% block title %}Прогноз погоды — Метеосистема{% endblock title %}
+{% block title %}
+{% if forecast.time %}Прогноз погоды{% else %}Текущая погода{% endif %}
+{% endblock title %}
 {% block content %}
-<main class="min-vh-100">
-<h1 class="text-center mb-3">Прогноз погоды&nbsp;от {{ meteorological_service }}</h1>
-<div class="py-2 bg-body-secondary">
-    <h2 class="text-center mb-3">{{ locality }}</h2>
-    {% if forecast %}
-    <table class="table table-hover">
-        <tbody>
-            {% for parameter, value in forecast.items %}
-            <tr>
-                <th scope="row" class="text-start">{{ parameter }}</th>
-                <td class="text-center">{{ value|capfirst }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <h2 class="text-center">Не&nbsp;удалось получить данные от метеорологической службы.</h2>
-    {% endif %}
-</div>
-{% endblock content %}
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h2 mt-3 mb-3">
+				{% if forecast.time %}Прогноз погоды{% else %}Текущая погода{% endif %}&nbsp;от
+				{{ forecast.meteorological_service }}
+			</h1>
+			<h2 class="h3 mb-3">
+				{{ forecast.locality }}{% if forecast.time %},
+				<span class="fw-normal"> на {{ forecast.time }}</span>{% endif %}
+			</h2>
+			{% if forecast.forecast %}
+			<table class="table table-hover mb-5">
+				<tbody>
+					{% for parameter, value in forecast.forecast.items %}
+					<tr>
+						<th scope="row" class="text-start">{{ parameter }}</th>
+						<td class="text-center">{{ value|capfirst }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<h3 class="h4 mt-3 mb-3">
+				Не&nbsp;удалось получить данные от метеорологической службы.
+			</h3>
+			<div
+				class="alert alert-warning d-flex align-items-center col-8"
+				role="alert"
+			>
+				<i
+					class="bi bi-exclamation-triangle fs-3 me-2"
+					role="img"
+					aria-label="Warning:"
+				></i>
+				<p>
+					Пожалуйста, убедитесь, что населённый пункт
+					{% if coverage.name != 'Весь мир' %}
+					<a
+						href="#"
+						class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+						data-bs-toggle="tooltip"
+						data-bs-title="{{ coverage }}"
+						>покрывается</a
+					>
+					службой,{% endif %} не был переименован, и его название введено верно,
+					а затем отправьте форму повторно. Если проблема сохранится,
+					попробуйте перезайти позже.
+				</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
 </main>
+{% endblock content %}

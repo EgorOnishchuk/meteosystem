@@ -1,8 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}Неправильный запрос{% endblock title %}
 {% block content %}
-<main class="min-vh-100">
-	<h1 class="text-center mb-3">Запрос составлен неправильно</h1>
-	<p class="text-center fs-5">Убедитесь, что данные введены корректно. Если Вы&nbsp;каким-либо образом изменяли клиентский программный код, обновите страницу: такие изменения могут привести к&nbsp;неправильной работе Метеосистемы.</p>
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h4 mt-3 mb-3">Запрос составлен неправильно</h1>
+			<div
+				class="alert alert-warning d-flex align-items-center col-8"
+				role="alert"
+			>
+				<i
+					aria-label="Warning:"
+					class="bi bi-exclamation-triangle fs-3 me-2"
+					role="img"
+				></i>
+				<p>
+					Убедитесь, что данные введены корректно. Если
+					Вы&nbsp;каким-либо образом изменяли клиентский программный
+					код, обновите страницу: такие изменения могут привести
+					к&nbsp;неправильной работе Метеосистемы.
+				</p>
+			</div>
+		</div>
+	</div>
 </main>
 {% endblock content %}

@@ -1,5 +1,6 @@
-Django~=4.2.11
+Django~=5.0.4
 django-crispy-forms~=2.1
 crispy-bootstrap5~=2024.2
 Faker~=24.8.0
 requests~=2.31.0
+django-cors-headers~=4.3.1

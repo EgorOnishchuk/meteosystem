@@ -1,29 +1,45 @@
 {% extends 'base.html' %}
-{% block title %}Метеосистема{% endblock title %}
-{% block links %}
-{% endblock links %}
+{% block title %}Главная страница{% endblock title %}
 {% block content %}
 <main>
-	<div class="banner vh-100 d-flex justify-content-center align-items-center rounded">
-		<a href="{% url 'Службы' %}" role="button" class="col-6 btn btn-lg btn-success fs-2 opacity-75">Начать</a>
+	<div
+		class="banner vh-100 d-flex justify-content-center align-items-center rounded"
+	>
+		<a
+			class="col-6 btn btn-lg btn-success fs-2 opacity-75"
+			href="{% url 'Метеорологические службы' %}"
+			role="button"
+			>Начать</a
+		>
 	</div>
-	<div class="card-group mt-2 shadow">
+	<div class="card-group mt-2 mb-4 shadow">
 		<div class="card bg-info-subtle">
 			<h2 class="card-header fs-5">Узнавайте</h2>
 			<div class="card-body">
-				<p class="card-text">Прогноз погоды от&nbsp;ведущих метеорологических служб доступен в&nbsp;режиме &laquo;одного окна&raquo;.</p>
+				<p class="card-text">
+					Прогноз погоды от&nbsp;ведущих метеорологических служб
+					доступен в&nbsp;режиме &laquo;одного окна&raquo;.
+				</p>
 			</div>
 		</div>
 		<div class="card bg-info-subtle">
 			<h2 class="card-header fs-5">Сравнивайте</h2>
 			<div class="card-body">
-				<p class="card-text">Параметры от&nbsp;разных поставщиков данных фильтруются и&nbsp;сопоставляются, чтобы&nbsp;Вы могли проверить, чей прогноз оказался точнее.</p>
+				<p class="card-text">
+					Параметры от&nbsp;разных поставщиков данных фильтруются
+					и&nbsp;сопоставляются, чтобы&nbsp;Вы могли проверить, чей
+					прогноз оказался точнее.
+				</p>
 			</div>
 		</div>
 		<div class="card bg-info-subtle">
 			<h2 class="card-header fs-5">Экономьте время</h2>
 			<div class="card-body">
-				<p class="card-text">Интерфейс &laquo;Метеосистемы&raquo; функционален и&nbsp;эргономичен&nbsp;&mdash; на&nbsp;его освоение понадобится пару минут.</p>
+				<p class="card-text">
+					Интерфейс &laquo;Метеосистемы&raquo; функционален
+					и&nbsp;эргономичен&nbsp;&mdash; на&nbsp;его освоение
+					понадобится пару минут.
+				</p>
 			</div>
 		</div>
 	</div>

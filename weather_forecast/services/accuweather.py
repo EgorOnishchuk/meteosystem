@@ -77,9 +77,10 @@ class AccuWeather(WeatherForecast):
 
         return {
             'meteorological_service': self.meteorological_service,
-            'locality': f'{locality}, на {time}',
+            'locality': locality,
+            'time': time,
             'forecast': {
-                'Ключевые события': response['Headline']['Text'],
+                'Ключевые события на ближайшие дни': response['Headline']['Text'],
                 'Суточная температура': f'минимальная {round(temperature["Minimum"]["Value"])} ℃, '
                                         f'максимальная {round(temperature["Maximum"]["Value"])} ℃',
                 'Суточная погода по ощущениям': f'минимальная {round(feel_temperature["Minimum"]["Value"])} ℃, '

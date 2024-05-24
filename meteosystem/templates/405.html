@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Действие недоступно{% endblock title %}
+{% block content %}
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h4 mt-3 mb-3">Неправильный способ обращения к странице</h1>
+			<div
+				class="alert alert-warning d-flex align-items-center col-8"
+				role="alert"
+			>
+				<i
+					aria-label="Warning:"
+					class="bi bi-exclamation-triangle fs-3 me-2"
+					role="img"
+				></i>
+				<p>
+				Пожалуйста, убедитесь, что Вы предоставили необходимые данные
+				для получения результата, например через формы. В других
+				случаях используйте правильный HTTP метод.
+				</p>
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock content %}

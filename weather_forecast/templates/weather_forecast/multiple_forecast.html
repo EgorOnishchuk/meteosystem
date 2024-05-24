@@ -1,34 +1,71 @@
 {% extends 'base.html' %}
-{% block title %}Прогноз погоды — Метеосистема{% endblock title %}
+{% block title %}
+{% if forecast.time %}Прогноз погоды{% else %}Текущая погода{% endif %}
+{% endblock title %}
 {% block content %}
-<main class="min-vh-100">
-<h1 class="text-center mb-3">Сравнительный прогноз погоды</h1>
-<div class="py-2 bg-body-secondary">
-    <h2 class="text-center mb-3">{{ locality }}</h2>
-    {% if forecasts %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col"></th>
-                {% for meteorological_service in meteorological_services %}
-                    <th scope="col" class="text-center">{{ meteorological_service }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for parameter, values in forecasts.items %}
-            <tr>
-                <th scope="row" class="text-start">{{ parameter }}</th>
-                {% for value in values %}
-                <td class="text-center">{{ value|capfirst }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <h2 class="text-center">Не&nbsp;удалось получить данные от метеорологических служб.</h2>
-    {% endif %}
-</div>
-{% endblock content %}
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h2 mt-3 mb-3">
+				Сравнение {% if forecast.time %}прогнозов погоды{% else %}текущей погоды{% endif %}
+			</h1>
+			<h2 class="h3 mb-3">
+				{{ forecast.locality }}{% if forecast.time %}, <span class="fw-normal">на
+					{{ forecast.time }}</span>{% endif %}
+			</h2>
+			{% if forecast.forecasts %}
+			<table class="table table-hover mb-5">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						{% for meteorological_service in forecast.meteorological_services %}
+						<th scope="col" class="text-center">
+							{{ meteorological_service }}
+						</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for parameter, values in forecast.forecasts.items %}
+					<tr>
+						<th scope="row" class="text-start">{{ parameter }}</th>
+						{% for value in values %}
+						<td class="text-center">{{ value|capfirst }}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<h3 class="h4 mt-3">
+				Не&nbsp;удалось получить данные от метеорологической службы.
+			</h3>
+			<div
+				class="alert alert-warning d-flex align-items-center col-8"
+				role="alert"
+			>
+				<i
+					class="bi bi-exclamation-triangle fs-3 me-2"
+					role="img"
+					aria-label="Warning:"
+				></i>
+				<p>
+					Пожалуйста, убедитесь, что населённый пункт
+					{% if coverage.name != 'Весь мир' %}
+					<a
+						href="#"
+						class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+						data-bs-toggle="tooltip"
+						data-bs-title="{{ coverage }}"
+						>покрывается</a
+					>
+					службой,{% endif %} не был переименован, и его название введено верно,
+					а затем отправьте форму повторно. Если проблема сохранится,
+					попробуйте перезайти позже.
+				</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
 </main>
+{% endblock content %}

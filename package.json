@@ -1,0 +1,20 @@
+{
+	"name": "meteosystem",
+	"version": "1.0.0",
+	"devDependencies": {
+		"prettier": "3.2.5"
+	},
+	"description": "Конфигурация Prettier для Метеосистемы",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/EgorOnishchuk/meteosystem.git"
+	},
+	"private": true,
+	"prettier": {
+		"useTabs": true,
+		"tabWidth": 4,
+		"singleQuote": true,
+		"trailingComma": "es5"
+	}
+}

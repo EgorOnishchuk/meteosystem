@@ -12,3 +12,8 @@
     background-image: url(../images/nature.jpg);
     background-size: cover;
 }
+
+.footer__logo {
+    height: 1rem;
+    width: 5rem;
+}

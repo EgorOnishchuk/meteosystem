@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}Страница не найдена{% endblock title %}
 {% block content %}
-<main class="min-vh-100">
-	<h1 class="text-center mb-3">Страницы по&nbsp;данному адресу не&nbsp;существует</h1>
-	<p class="text-center fs-5">Если Вы&nbsp;ищите страницу через адресную строку браузера, убедитесь, что её&nbsp;название набрано верно
-		или используйте графический интерфейс.</p>
+<main>
+	<div class="py-5 px-3 bg-body-secondary rounded mb-4">
+		<div class="card text-center align-items-center">
+			<h1 class="h4 mt-3 mb-3">
+				Страницы по&nbsp;данному адресу не&nbsp;существует
+			</h1>
+			<div
+				class="alert alert-warning d-flex align-items-center col-8"
+				role="alert"
+			>
+				<i
+					aria-label="Warning:"
+					class="bi bi-exclamation-triangle fs-3 me-2"
+					role="img"
+				></i>
+				<p>
+					Если Вы&nbsp;ищете страницу через адресную строку браузера,
+					убедитесь, что её&nbsp;название набрано верно или
+					используйте графический интерфейс.
+				</p>
+			</div>
+		</div>
+	</div>
 </main>
 {% endblock content %}
