@@ -5,7 +5,7 @@ const meteorologicalServiceDropdown = document.querySelector(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-	fetch('http://localhost:8000/services/weathertime/', {
+	fetch('https://egoronishchuk.pythonanywhere.com/services/weathertime', {
 		method: 'POST',
 		body: JSON.stringify({
 			meteorological_service: meteorologicalServiceDropdown.value,
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 meteorologicalServiceDropdown.addEventListener('change', (event) => {
-	fetch('http://localhost:8000/services/weathertime/', {
+	fetch('https://egoronishchuk.pythonanywhere.com/services/weathertime', {
 		method: 'POST',
 		body: JSON.stringify({
 			meteorological_service: event.target.value,
